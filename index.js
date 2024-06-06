@@ -21,15 +21,14 @@ app.get("/articles", (req, res) => {
 });
 
 app.get("/articles/:slug", (req, res) => {
-  const {slug} = req.params;
-  const article = articles.find(article => article.slug === slug)
+  const { slug } = req.params;
+  const article = articles.find((article) => article.slug === slug);
 
-  if(article) {
+  if (article) {
     res.render("article", { article });
   } else {
     res.render("404");
   }
-  
 });
 
 app.get("/*", (req, res, next) => {
