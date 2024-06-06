@@ -32,6 +32,31 @@ app.get("/articles/:slug", (req, res) => {
   
 });
 
+
+app.get("/articles/:author", (req, res) => {
+  const {author} = req.params;
+  const article = articles.find(article => article.author === author)
+
+  if(article) {
+    res.render("article", { article });
+  } else {
+    res.render("404");
+  }
+  
+});
+
+app.get("/articles/:title", (req, res) => {
+  const {title} = req.params;
+  const article = articles.find(article => article.title === title)
+
+  if(article) {
+    res.render("article", { article });
+  } else {
+    res.render("404");
+  }
+  
+});
+
 app.get("/*", (req, res, next) => {
   res.render("404");
 });
