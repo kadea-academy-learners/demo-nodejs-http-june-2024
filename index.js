@@ -9,6 +9,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.json())
 app.set('views', __dirname + '/views')
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 
@@ -29,6 +31,10 @@ app.get("/articles", (req, res) => {
   res.render("posts", {articles})
 })
 
+app.get("/articles/add", (req, res) => {
+  res.render("addArticle")
+})
+
 app.get("/articles/:slug", (req, res) => {
   const slug = req.params.slug;
   const post = articles.find(article => article.slug === slug)
@@ -37,6 +43,12 @@ app.get("/articles/:slug", (req, res) => {
   } else {
     res.render("404")
   }
+})
+
+app.post("/articles", (req, res) => {
+    console.log(req.body);
+
+  res.send("ok")
 })
 
 app.delete("/articles/:slug", (req, res) => {

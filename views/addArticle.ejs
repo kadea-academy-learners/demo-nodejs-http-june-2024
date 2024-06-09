@@ -1,0 +1,60 @@
+<%- include('partials/header', {title: "Ajouter un article"}) %>
+
+<div>
+    <a href="/articles"> Retour </a>
+</div>
+
+<div>
+    <h1>Ajouter un article</h1>
+</div>
+<div>
+    <form action="/articles" method="POST" id="add-article-form">
+        <div>
+            <div>
+                <label for="urlToImage">URL de l'image</label>
+            </div>
+            <div>
+                <input type="file" id="urlToImage" name="urlToImage">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="title">Titre</label>
+            </div>
+            <div>
+                <input type="text" id="title" name="title">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="description">Description</label>
+            </div>
+            <div>
+                <input type="text" id="description" name="description">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="content">Contenu</label>
+            </div>
+            <div>
+                <textarea id="content" name="content"></textarea>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="author">Auteur</label>
+            </div>
+            <div>
+                <input type="text" id="author" name="author">
+            </div>
+        </div>
+        <div>
+            <button type="submit">Ajouter</button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/addArticle.js"></script>
+
+<%- include('partials/footer') -%>
