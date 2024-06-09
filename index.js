@@ -9,6 +9,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.json())
 app.set('views', __dirname + '/views')
+app.use(express.static(path.join(__dirname, 'public')))
 
 
 app.get("/", (req, res) => {
@@ -35,6 +36,17 @@ app.get("/articles/:slug", (req, res) => {
     res.render("post", {article: post})
   } else {
     res.render("404")
+  }
+})
+
+app.delete("/articles/:slug", (req, res) => {
+  const slug = req.params.slug;
+  const post = articles.find(article => article.slug === slug)
+  if (post) {
+    articles.splice(articles.indexOf(post), 1)
+    res.status(200).send()
+  } else {
+    res.status(404).send()
   }
 })
 

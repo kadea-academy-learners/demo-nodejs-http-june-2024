@@ -1,6 +1,15 @@
 <%- include('partials/header', {title: article.title}) %>
+<div>
+    <a href="/articles"> Retour </a>
+</div>
+<div>
+    <img src='<%= article.urlToImage%>'>
+</div>
     <div>
-        <img src='<%= article.urlToImage%>'>
+        <p>
+            <a href="/article/edit">Modifier</a>
+            <a href="#" id="deleteArticle" data-slug="<%=article.slug%>" >Supprimer</a>
+        </p>
     </div>
     <div>
         <h1><%= article.title%></h1>
@@ -9,4 +18,7 @@
     <div>
         <%= article.content%>
     </div>
+
+
+<script src="/js/deleteArticle.js"></script>
 <%- include('partials/footer') -%>
