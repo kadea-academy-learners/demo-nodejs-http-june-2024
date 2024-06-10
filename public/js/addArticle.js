@@ -28,24 +28,32 @@ async function uploadImage() {
 
 }
 
-function addArticle(article) {
-    fetch("/articles", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(article)
-    })
-    .then(response => {
-        if (response.status === 200) {
+async function addArticle(article) {
+    try {
+        const response = await fetch("/articles", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(article)
+        })
+
+
+
+        if (response.status === 201) {
             window.location.href = "/articles";
         } else {
-            throw new Error("Failed to add article");
+            const {errors} = await response.json()
+            console.log(errors)
+            const errorsBloc = document.querySelector("#errors")
+            errorsBloc.innerHTML = ''
+            errorsBloc.innerHTML = errors.map(error => `<li>${error.msg}</li>`).join("")
+            alert("Failed to add article");
         }
-    })
-    .catch(error => {
-        console.error(error);
-    })
+    } catch (error) {
+        console.error(error)
+    }
+
 }
 
 
@@ -64,6 +72,7 @@ addForm.addEventListener("submit", async (e) => {
             urlToImage,
             content: formData.get("content"),
         })
+
 
         e.target.reset();
         e.target.querySelector("button").disabled = false;
