@@ -1,0 +1,17 @@
+<%- include("./partials/header.ejs", {title: "Liste d'articles"}) %>
+<div>
+  <p>
+    <a href="/article/add">Ajouter un article</a>
+  </p>
+</div>
+<h1>Articles</h1>
+
+<ul>
+  <% for (let article of articles){ %>
+
+  <li><a href="<%=`/articles/${article.slug}`%>"><%= article.title %></a></li>
+
+  <% } %>
+</ul>
+
+<%- include("./partials/footer.ejs") %>
