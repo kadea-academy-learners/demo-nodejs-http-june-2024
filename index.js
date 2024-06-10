@@ -4,6 +4,7 @@ const app = express();
 const articles = require("./data/db.json");
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
+app.use(express.static(__dirname + "/public"));
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -29,6 +30,10 @@ app.get("/articles/:slug", (req, res) => {
   } else {
     res.render("404");
   }
+});
+
+app.get("/article/add", (req, res) => {
+  res.render("addArticle");
 });
 
 app.get("/*", (req, res, next) => {
