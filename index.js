@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path")
-const { query, validationResult, body } = require('express-validator');
+const {  validationResult, body } = require('express-validator');
+const methodOverride = require('method-override');
 
 const articles = require("./articles.json")
 
@@ -13,6 +14,7 @@ app.use(express.json())
 app.set('views', __dirname + '/views')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 
@@ -86,8 +88,8 @@ app.delete("/articles/:slug", (req, res) => {
   const slug = req.params.slug;
   const post = articles.find(article => article.slug === slug)
   if (post) {
-    articles.splice(articles.indexOf(post), 1)
-    res.status(200).send()
+      articles.splice(articles.indexOf(post), 1)
+      res.redirect('/articles')
   } else {
     res.status(404).send()
   }

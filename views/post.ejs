@@ -8,8 +8,11 @@
     <div>
         <p>
             <a href="/article/edit">Modifier</a>
-            <a href="#" id="deleteArticle" data-slug="<%=article.slug%>" >Supprimer</a>
+
         </p>
+        <form method="POST" action="/articles/<%= article.slug%>?_method=DELETE">
+            <button id="delete-article">Supprimer</button>
+        </form>
     </div>
     <div>
         <h1><%= article.title%></h1>
