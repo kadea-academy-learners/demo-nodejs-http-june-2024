@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const app = express();
 const { body, validationResult } = require("express-validator");
 
@@ -9,12 +10,14 @@ app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 
-function addArticleValidations(){
+function addArticleValidations() {
   return [
-    body("title").escape().isLength({ min: 5, max: 255 }).withMessage("Le nom doit avoir entre 5 et 255 caracteres"),
-  ]
+    body("title")
+      .escape()
+      .isLength({ min: 5, max: 255 })
+      .withMessage("Le nom doit avoir entre 5 et 255 caracteres"),
+  ];
 }
-
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -47,9 +50,10 @@ app.post("/articles", addArticleValidations(), (req, res) => {
   article.publishedAt = new Date();
 
   articles.push(article);
+  fs.writeFileSync("./data/db.json", JSON.stringify(articles,null,2));
 
   res.send("ok");
-});
+});   
 
 app.get("/articles/:slug", (req, res) => {
   const { slug } = req.params;
