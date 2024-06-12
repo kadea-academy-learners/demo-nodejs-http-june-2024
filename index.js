@@ -16,6 +16,23 @@ function addArticleValidations() {
       .escape()
       .isLength({ min: 5, max: 255 })
       .withMessage("Le nom doit avoir entre 5 et 255 caracteres"),
+
+    body("description")
+      .escape()
+      .isLength({ min: 5, max: 500 })
+      .withMessage("La description doit avoir entre 5 et 500 caracteres"),
+
+    body("author")
+      .escape()
+      .isLength({ min: 2, max: 50 })
+      .withMessage("Le nom de l'auteur doit avoir entre 2 et 50 caractere"),
+
+    body("urlToImage").isURL().withMessage("L'URL n'est pas valide"),
+
+    body("content")
+      .escape()
+      .isLength({ min: 5, max: 500 })
+      .withMessage("Le contenu doit avoir entre 5 et 500 caracteres"),
   ];
 }
 
@@ -46,14 +63,18 @@ app.post("/articles", addArticleValidations(), (req, res) => {
   const result = validationResult(req);
 
   console.log(result.errors);
-  article.slug = article.title.toLowerCase().replace(" ", "-");
-  article.publishedAt = new Date();
+  if (result.errors.length === 0) {
+    article.slug = article.title.toLowerCase().replace(" ", "-");
+    article.publishedAt = new Date();
 
-  articles.push(article);
-  fs.writeFileSync("./data/db.json", JSON.stringify(articles,null,2));
+    articles.push(article);
+    fs.writeFileSync("./data/db.json", JSON.stringify(articles, null, 2));
 
-  res.send("ok");
-});   
+    res.send("ok");
+  } else {
+    res.statusCode = 400;
+  }
+});
 
 app.get("/articles/:slug", (req, res) => {
   const { slug } = req.params;
