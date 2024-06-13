@@ -57,6 +57,16 @@ app.get("/articles", (req, res) => {
 // description: pas vide, echapper, max : 500 min: 5
 // contenu : pas vide, echapper, max : 500 min: 5
 
+app.delete("/articles/:slug", (req, res) => {
+  const { slug } = req.params;
+
+  const articleIndex = articles.findIndex((article) => article.slug === slug);
+  articles.splice(articleIndex, 1);
+  fs.writeFileSync("./data/db.json", JSON.stringify(articles, null, 2));
+
+  res.send("ok");
+});
+
 app.post("/articles", addArticleValidations(), (req, res) => {
   const article = req.body;
 
