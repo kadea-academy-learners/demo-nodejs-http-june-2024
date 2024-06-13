@@ -6,7 +6,7 @@
 <button id="delete" name="<%=article.slug %>" type="submit">Supprimer</button>
 <a href="/article/update/<%=article.slug %>">Modifier</a>
 
-<img src="<%= `$Modifier{article.urlToImage}` %>" alt="gallery image" />
+<img src="<%= `${article.urlToImage}` %>" alt="gallery image" />
 <p><%= article.content %></p>
 
 
