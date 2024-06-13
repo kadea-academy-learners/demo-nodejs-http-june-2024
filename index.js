@@ -10,7 +10,7 @@ app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 
-function addArticleValidations() {
+function articleFieldsValidations() {
   return [
     body("title")
       .escape()
@@ -36,6 +36,10 @@ function addArticleValidations() {
   ];
 }
 
+function updateDBJSON(array) {
+  fs.writeFileSync("./data/db.json", JSON.stringify(array, null, 2));
+}
+
 app.get("/", (req, res) => {
   res.render("index");
 });
@@ -43,6 +47,18 @@ app.get("/", (req, res) => {
 app.get("/contact", (req, res) => {
   res.render("contact");
 });
+
+app.get("/article/update/:slug", (req, res)=>{
+   const { slug } = req.params;
+  const article = articles.find((article) => article.slug === slug);
+
+  if (article) {
+    res.render("updateArticle", { article });
+  } else {
+    res.render("404");
+  }
+
+})
 
 app.get("/about", (req, res) => {
   res.render("about");
@@ -62,12 +78,11 @@ app.delete("/articles/:slug", (req, res) => {
 
   const articleIndex = articles.findIndex((article) => article.slug === slug);
   articles.splice(articleIndex, 1);
-  fs.writeFileSync("./data/db.json", JSON.stringify(articles, null, 2));
-
+  updateDBJSON(articles);
   res.send("ok");
 });
 
-app.post("/articles", addArticleValidations(), (req, res) => {
+app.post("/articles", articleFieldsValidations(), (req, res) => {
   const article = req.body;
 
   const result = validationResult(req);
@@ -78,12 +93,39 @@ app.post("/articles", addArticleValidations(), (req, res) => {
     article.publishedAt = new Date();
 
     articles.push(article);
-    fs.writeFileSync("./data/db.json", JSON.stringify(articles, null, 2));
-
+    updateDBJSON(articles);
     res.send("ok");
   } else {
     res.statusCode = 400;
   }
+});
+
+/* title,
+    author,
+    content,
+    description,
+    image,
+    updatedAt
+*/
+app.put("/articles/:slug", articleFieldsValidations(), (req, res) => {
+  const { slug } = req.params;
+  const { title, author, content, description, urlToImage } = req.body;
+
+  const articleIndex = articles.findIndex((article) => article.slug === slug);
+  if (articleIndex < 0) {
+    return res.status(404).send("Not found");
+  }
+
+  console.log("in");
+
+  articles[articleIndex].title = title;
+  articles[articleIndex].content = content;
+  articles[articleIndex].author = author;
+  articles[articleIndex].description = description;
+  articles[articleIndex].urlToImage = urlToImage;
+  articles[articleIndex].updateAt = new Date();
+
+  updateDBJSON(articles);
 });
 
 app.get("/articles/:slug", (req, res) => {
