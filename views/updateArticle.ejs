@@ -8,7 +8,12 @@
       <label for="author">Auteur</label>
     </div>
     <div>
-      <input type="text" name="author" id="author" value="<%= article.author %>" />
+      <input
+        type="text"
+        name="author"
+        id="author"
+        value="<%= article.author %>"
+      />
     </div>
   </div>
   <div>
@@ -16,7 +21,7 @@
       <label for="title">Title</label>
     </div>
     <div>
-      <input type="text" name="title" id="title" />
+      <input type="text" name="title" id="title" value="<%= article.title %>" />
     </div>
   </div>
   <div>
@@ -24,12 +29,23 @@
       <label for="description">Description</label>
     </div>
     <div>
-      <input type="text" name="description" id="description" />
+      <input
+        type="text"
+        name="description"
+        id="description"
+        value="<%= article.description %>"
+      />
     </div>
   </div>
   <div>
     <div>
-      <label for="img">Choisir une image</label>
+      <label for="img">
+        <img
+          src="<%= article.urlToImage %>"
+          alt="Image de l'article"
+          id="previewImage"
+        />
+      </label>
     </div>
     <div>
       <input type="file" name="img" id="img" />
@@ -41,12 +57,17 @@
       <label for="content">Contenu</label>
     </div>
     <div>
-      <textarea name="content" id="content"></textarea>
+      <textarea name="content" id="content"><%= article.content %></textarea>
     </div>
   </div>
 
-  <input type="submit" id="btn-submit" value="Ajouter" />
+  <input
+    type="submit"
+    id="btn-submit"
+    value="Ajouter"
+    data-slug="<%= article.slug %>"
+  />
 </form>
 
-<script src="/js/addArticle.js"></script>
+<script src="/js/updateArticle.js"></script>
 <%- include("./partials/footer.ejs") %>

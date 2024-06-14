@@ -37,7 +37,16 @@ function articleFieldsValidations() {
 }
 
 function updateDBJSON(array) {
-  fs.writeFileSync("./data/db.json", JSON.stringify(array, null, 2));
+  fs.writeFileSync(
+    "./data/db.json",
+    JSON.stringify(
+      array,
+      (error) => {
+        if (error) console.log(error);
+      },
+      2
+    )
+  );
 }
 
 app.get("/", (req, res) => {
@@ -48,8 +57,8 @@ app.get("/contact", (req, res) => {
   res.render("contact");
 });
 
-app.get("/article/update/:slug", (req, res)=>{
-   const { slug } = req.params;
+app.get("/article/update/:slug", (req, res) => {
+  const { slug } = req.params;
   const article = articles.find((article) => article.slug === slug);
 
   if (article) {
@@ -57,8 +66,7 @@ app.get("/article/update/:slug", (req, res)=>{
   } else {
     res.render("404");
   }
-
-})
+});
 
 app.get("/about", (req, res) => {
   res.render("about");
@@ -107,25 +115,29 @@ app.post("/articles", articleFieldsValidations(), (req, res) => {
     image,
     updatedAt
 */
-app.put("/articles/:slug", articleFieldsValidations(), (req, res) => {
-  const { slug } = req.params;
-  const { title, author, content, description, urlToImage } = req.body;
+app.put("/articles!/update/:slug", articleFieldsValidations(), (req, res) => {
+  try {
+    const { slug } = req.params;
+    const { title, author, content, description, urlToImage } = req.body;
+    console.log("in");
+    const articleIndex = articles.findIndex((article) => article.slug === slug);
+    if (articleIndex < 0) {
+      return res.status(404).send("Not found");
+    }
 
-  const articleIndex = articles.findIndex((article) => article.slug === slug);
-  if (articleIndex < 0) {
-    return res.status(404).send("Not found");
+    articles[articleIndex].title = title;
+    articles[articleIndex].content = content;
+    articles[articleIndex].author = author;
+    articles[articleIndex].description = description;
+    articles[articleIndex].urlToImage = urlToImage;
+    articles[articleIndex].updateAt = new Date();
+
+    updateDBJSON(articles);
+
+    res.send("ok");
+  } catch (error) {
+    console.log(error);
   }
-
-  console.log("in");
-
-  articles[articleIndex].title = title;
-  articles[articleIndex].content = content;
-  articles[articleIndex].author = author;
-  articles[articleIndex].description = description;
-  articles[articleIndex].urlToImage = urlToImage;
-  articles[articleIndex].updateAt = new Date();
-
-  updateDBJSON(articles);
 });
 
 app.get("/articles/:slug", (req, res) => {
