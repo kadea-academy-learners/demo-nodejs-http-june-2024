@@ -23,30 +23,11 @@ async function uploadImage(image) {
     const data = await response.json();
 
     return data.secure_url;
-  } catch (error) {
+  } catch (error) { 
     alert("Le chargement de l'image a echoue");
   }
 }
 
-async function addArticle(article){
-  try {
-    const response = await fetch("/articles", {
-      method: "POST", 
-      body:JSON.stringify(article),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-
-    if (response.ok) {
-      window.location.href = "/articles"
-    }
-    
-    console.log(response);
-  } catch (error) {
-    
-  }
-}
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
   const btnSubmit = event.target.querySelector("#btn-submit");
@@ -55,10 +36,18 @@ form.addEventListener("submit", async function (event) {
   const formData = new FormData(event.target);
   const urlToImage = await uploadImage(formData.get("img"));
 
+  // const data = {
+  //   author: formData.get("author"),
+  //   title: formData.get("title"),
+  //   description: formData.get("description"),
+  //   urlToImage,
+  //   "content": formData.get("content")
+  // }
+
   const data = Object.fromEntries(formData.entries());
   data.urlToImage = urlToImage;
   delete data.img;
-  addArticle(data);
+  console.log(data);
   btnSubmit.disabled = false;
   event.target.reset();
 });

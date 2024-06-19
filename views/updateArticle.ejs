@@ -16,7 +16,7 @@
       <label for="title">Title</label>
     </div>
     <div>
-      <input type="text" name="title" id="title" />
+      <input type="text" name="title" id="title" value="<%= article.title %>"/>
     </div>
   </div>
   <div>
@@ -24,7 +24,7 @@
       <label for="description">Description</label>
     </div>
     <div>
-      <input type="text" name="description" id="description" />
+      <input type="text" name="description" id="description" value="<%= article.description %>" />
     </div>
   </div>
   <div>
@@ -32,7 +32,7 @@
       <label for="img">Choisir une image</label>
     </div>
     <div>
-      <input type="file" name="img" id="img" />
+      <input type="file" name="img" id="img"  value="<%= article.urlImage %>"> />
     </div>
   </div>
 
@@ -41,7 +41,7 @@
       <label for="content">Contenu</label>
     </div>
     <div>
-      <textarea name="content" id="content"></textarea>
+      <textarea name="content" id="content" value="<%= article.content %>"></textarea>></textarea>
     </div>
   </div>
 

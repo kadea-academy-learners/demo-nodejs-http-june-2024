@@ -101,13 +101,6 @@ app.post("/articles", articleFieldsValidations(), (req, res) => {
   }
 });
 
-/* title,
-    author,
-    content,
-    description,
-    image,
-    updatedAt
-*/
 app.put("/articles/:slug", articleFieldsValidations(), (req, res) => {
   const { slug } = req.params;
   const { title, author, content, description, urlToImage } = req.body;
